@@ -1,0 +1,42 @@
+# Operating system and IDE files
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+
+# Environment and secret files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.jks
+
+# Node.js / Next.js
+client/node_modules/
+client/.next/
+client/out/
+client/build/
+client/coverage/
+client/*.tsbuildinfo
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+
+# Java / Maven / Spring Boot
+server/target/
+server/.mvn/wrapper/maven-wrapper.jar
+server/.classpath
+server/.project
+server/.settings/
+server/.springBeans
+server/.sts4-cache
+server/.apt_generated/
+server/build/
+
+# Local database and Docker data
+docker/data/
+*.log
