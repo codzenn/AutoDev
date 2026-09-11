@@ -54,17 +54,5 @@ The implementation favors traceability and safe documentation over unsupported c
 | Model responses need to be visible before generation completes. | Waiting for the entire completion increases perceived latency. | Use Spring MVC SSE and a browser-side stream parser; persist the completed assistant message and citations. | `ChatController` produces `text/event-stream`, and the client contains `lib/stream-chat.ts` for incremental events. |
 | GitHub indexing requests could be too aggressive. | A repository index can issue many tree and file requests. | Add a configurable 50 ms delay between indexing API calls and interrupt-safe handling. | `GitHubRateLimiter` is invoked for each processed file and restores the interrupted flag before raising an error. |
 | Documentation requirements requested metrics that the repository does not measure. | No committed load-test harness, monitoring output, or retrieval ground-truth dataset exists. | Document only source-verified constants and explicitly label latency, throughput, resource, and RAG-quality values as not measured. | `README.md` contains a benchmark-status section and does not fabricate before/after retrieval numbers. |
-
-## Open decisions and follow-up work
-
-The following items remain intentionally unresolved because the repository contains no evidence for a final choice:
-
-- production hosting topology and horizontal scaling;
-- observability, tracing, and alerting;
-- load-test methodology and service-level objectives;
-- retrieval evaluation corpus and human/automatic relevance rubric;
-- incremental indexing based on Git commits;
-- licensing terms and the root `LICENSE` file.
-
 Any future decision should add its date, stakeholders, alternatives, chosen outcome, and validation evidence to this record.
 
