@@ -26,6 +26,10 @@ export const metadata: Metadata = {
     },
     description: "AutoDev indexes your GitHub repositories and lets you chat with your codebase using AI. Search, understand, and build faster with code-aware conversations.",
     metadataBase: new URL("http://localhost"),
+    icons: {
+        icon: [{url: "/icon.svg", type: "image/svg+xml"}],
+        apple: "/apple-icon.svg",
+    },
     openGraph: {
         title: "AutoDev — Chat with Your Code",
         description: "AI-powered code understanding for your GitHub repositories. Index your codebase and have intelligent conversations with it.",
@@ -42,6 +46,7 @@ export default function RootLayout({children}: LayoutProps<"/">) {
     return (
         <html
             lang="en"
+            suppressHydrationWarning
             className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-mono", jetbrainsMono.variable, merriweatherHeading.variable)}
         >
         <body className="min-h-full flex flex-col">

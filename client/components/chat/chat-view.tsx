@@ -176,7 +176,9 @@ export function ChatView({ repoId }: { repoId: string }) {
                     <p className="text-sm text-muted-foreground">
                         {(repoQuery.error as Error)?.message ?? "Repository not found"}
                     </p>
-                    <Button render={<Link href="/dashboard" />}>Back to dashboard</Button>
+                    <Button nativeButton={false} render={<Link href="/dashboard" />}>
+                        Back to dashboard
+                    </Button>
                 </div>
             </AppShell>
         );
@@ -215,7 +217,12 @@ export function ChatView({ repoId }: { repoId: string }) {
                             <span className="hidden sm:inline">New chat</span>
                         </Button>
                     )}
-                    <Button variant="outline" size="sm" render={<Link href="/dashboard" />}>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        nativeButton={false}
+                        render={<Link href="/dashboard" />}
+                    >
                         <ArrowLeft className="size-4" />
                         <span className="hidden sm:inline">Repos</span>
                         <FolderGit2 className="size-4 sm:hidden" />

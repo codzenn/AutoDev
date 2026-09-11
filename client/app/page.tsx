@@ -73,6 +73,7 @@ export default function Home() {
                     <Button
                         variant="outline"
                         size="sm"
+                        nativeButton={false}
                         render={<Link href="/login" />}
                     >
                         Sign in
@@ -149,4 +150,3 @@ export default function Home() {
         </div>
     );
 }
-
