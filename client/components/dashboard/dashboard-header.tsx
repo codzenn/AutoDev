@@ -77,7 +77,7 @@ export function DashboardHeader({
                                     isSyncing,
                                 }: DashboardHeaderProps) {
     return (
-        <div className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl">
+        <div className="sticky top-0 z-20 border-b glass-strong backdrop-blur-2xl">
             <div className="flex flex-col gap-4 px-4 py-4 md:px-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex min-w-0 items-start gap-3">
@@ -101,19 +101,19 @@ export function DashboardHeader({
                                 value={search}
                                 onChange={(e) => onSearchChange(e.target.value)}
                                 placeholder="Search repositories…"
-                                className="border-dashed bg-background pl-9 shadow-sm"
+                                className="border-dashed bg-background/60 pl-9 shadow-sm transition-all focus:shadow-md focus:ring-2 focus:ring-ring/20"
                             />
                         </div>
                         <div className="flex items-center gap-2">
                             <Button
                                 variant="outline"
-                                className="border-dashed shadow-sm"
+                                className="border-dashed shadow-sm transition-all hover:shadow-md"
                                 onClick={onSync}
                                 disabled={isSyncing}
                             >
                                 <RefreshCw
                                     data-icon="inline-start"
-                                    className={isSyncing ? "animate-spin" : undefined}
+                                    className={cn(isSyncing ? "animate-spin" : undefined)}
                                 />
                                 Sync
                             </Button>
@@ -122,7 +122,7 @@ export function DashboardHeader({
                     </div>
                 </div>
 
-                <Separator className="opacity-60" />
+                <Separator className="opacity-50" />
 
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex flex-wrap items-center gap-2">

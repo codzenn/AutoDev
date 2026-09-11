@@ -28,26 +28,26 @@ export function SettingsDashboard() {
 
     return (
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 p-4 md:p-6">
-            <Card>
+            <Card className="animate-fade-up gradient-border">
                 <CardHeader>
-                    <CardTitle>Profile</CardTitle>
+                    <CardTitle className="tracking-tight">Profile</CardTitle>
                     <CardDescription>
                         Your GitHub account connected to AutoDev.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center gap-4">
-                        <Avatar className="size-14 rounded-xl">
+                        <Avatar className="size-14 rounded-2xl ring-2 ring-border/60 shadow-lg shadow-foreground/5">
                             <AvatarImage
                                 src={user?.avatarUrl ?? undefined}
                                 alt={user?.displayName}
                             />
-                            <AvatarFallback className="rounded-xl">
+                            <AvatarFallback className="rounded-2xl bg-gradient-to-br from-[oklch(0.55_0.14_265)] to-[oklch(0.5_0.14_220)] text-white">
                                 {(user?.displayName ?? "DP").slice(0, 2).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
                         <div className="min-w-0">
-                            <p className="truncate font-medium">{user?.displayName}</p>
+                            <p className="truncate font-medium tracking-tight">{user?.displayName}</p>
                             <p className="truncate text-sm text-muted-foreground">
                                 @{user?.githubUsername}
                             </p>
@@ -76,9 +76,9 @@ export function SettingsDashboard() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="animate-fade-up [animation-delay:120ms] gradient-border">
                 <CardHeader>
-                    <CardTitle>Appearance</CardTitle>
+                    <CardTitle className="tracking-tight">Appearance</CardTitle>
                     <CardDescription>
                         Customize how AutoDev looks on your device.
                     </CardDescription>
@@ -118,9 +118,9 @@ export function SettingsDashboard() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="animate-fade-up [animation-delay:200ms] gradient-border">
                 <CardHeader>
-                    <CardTitle>Account actions</CardTitle>
+                    <CardTitle className="tracking-tight">Account actions</CardTitle>
                     <CardDescription>
                         Manage your session and connected workspace.
                     </CardDescription>

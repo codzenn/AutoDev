@@ -47,7 +47,8 @@ const LoginContent = () => {
     return (
         <div className="relative flex min-h-svh flex-col overflow-hidden bg-background">
             <div
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(from_var(--primary)_l_c_h/0.1),transparent_55%)]"/>
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,oklch(from_var(--primary)_l_c_h/0.12),transparent_55%)]"/>
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,oklch(0.5_0.14_220_/_0.08),transparent_50%)]"/>
 
             <header className="relative z-10 flex h-14 items-center justify-between px-4">
                 <Link href="/">
@@ -58,14 +59,14 @@ const LoginContent = () => {
 
             <main className="relative z-10 flex flex-1 items-center justify-center px-4 py-10">
                 <Card
-                    className="w-full max-w-sm border-border/70 bg-card/90 shadow-lg shadow-foreground/5 backdrop-blur-xl">
+                    className="w-full max-w-sm gradient-border animate-scale-in glass-strong">
                     <CardHeader className="space-y-4 text-center">
                         <div
-                            className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-foreground text-background">
+                            className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[oklch(0.55_0.14_265)] to-[oklch(0.5_0.14_220)] text-white shadow-lg shadow-[oklch(0.55_0.14_265)_/_0.35]">
                             <GitHubIcon className="size-6"/>
                         </div>
                         <div className="space-y-1">
-                            <CardTitle className="text-xl">Sign in</CardTitle>
+                            <CardTitle className="text-xl tracking-tight">Sign in</CardTitle>
                             <CardDescription>
                                 Connect GitHub to chat with your repositories.
                             </CardDescription>
@@ -74,7 +75,7 @@ const LoginContent = () => {
 
                     <CardContent className="space-y-4">
                         {error && (
-                            <Alert variant="destructive">
+                            <Alert variant="destructive" className="animate-fade-up">
                                 <AlertCircle/>
                                 <AlertTitle>Sign-in failed</AlertTitle>
                                 <AlertDescription>Please try again.</AlertDescription>
@@ -85,7 +86,7 @@ const LoginContent = () => {
                             href={getGithubLoginUrl()}
                             className={cn(
                                 buttonVariants({size: "lg"}),
-                                "inline-flex w-full items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90"
+                                "inline-flex w-full items-center justify-center gap-2 bg-foreground text-background hover:bg-foreground/90 transition-all duration-200 hover:shadow-lg hover:shadow-foreground/15 active:scale-[0.98]"
                             )}
                         >
                             <GitHubIcon className="size-5"/>

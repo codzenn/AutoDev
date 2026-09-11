@@ -182,13 +182,13 @@ export function AppShell({
             <SidebarInset>
                 {!hideHeader && (
                     <header
-                        className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/80 px-4 backdrop-blur">
+                        className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b glass-strong px-4 backdrop-blur-xl">
                         <SidebarTrigger className="-ml-1"/>
-                        <Separator orientation="vertical" className="mr-2 h-4"/>
+                        <Separator orientation="vertical" className="mr-2 h-4 opacity-60"/>
                         <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
                             <div className="min-w-0">
                                 {title && (
-                                    <h1 className="truncate font-heading text-sm font-medium">
+                                    <h1 className="truncate font-heading text-sm font-medium tracking-tight">
                                         {title}
                                     </h1>
                                 )}

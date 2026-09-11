@@ -35,12 +35,9 @@ export function RepoCard({ repo }: { repo: Repository }) {
 
     function handlePrimary() {
         if (repo.indexStatus === "READY") {
-            openChat();
             return;
         }
-        indexMutation.mutate(repo.id, {
-            onSuccess: () => router.push(`/chat/${repo.id}`),
-        });
+        indexMutation.mutate(repo.id);
     }
 
     return (

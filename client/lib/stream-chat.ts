@@ -72,7 +72,24 @@ export async function streamChatMessage(
 
             try {
                 if (event === "token") {
-                    handlers.onToken?.(JSON.parse(data) as string);
+                    const raw = JSON.parse(data);
+                    const tokenSafe =
+                        typeof raw === "string"
+                            ? raw
+                            : typeof raw === "number" || typeof raw === "bigint" || typeof raw === "boolean"
+                                ? String(raw)
+                                : Array.isArray(raw)
+                                    ? raw.map((x) => (typeof x === "string" ? x : "")).join("")
+                                    : raw && typeof raw === "object" && "text" in raw && typeof (raw as {text?: unknown}).text === "string"
+                                        ? (raw as {text: string}).text
+                                        : raw && typeof raw === "object" && "token" in raw && typeof (raw as {token?: unknown}).token === "string"
+                                            ? (raw as {token: string}).token
+                                            : typeof raw === "object" && raw !== null
+                                                ? ""
+                                                : String(raw ?? "");
+                    if (tokenSafe.length > 0) {
+                        handlers.onToken?.(tokenSafe);
+                    }
                 } else if (event === "user_message") {
                     handlers.onUserMessage?.(JSON.parse(data) as ChatMessage);
                 } else if (event === "assistant_message") {
@@ -81,9 +98,19 @@ export async function streamChatMessage(
                     handlers.onDone?.();
                 }
             } catch (err) {
-                handlers.onError?.(
-                    err instanceof Error ? err : new Error("Failed to parse SSE event")
-                );
+                if (event === "token") {
+                    const fallback =
+                        typeof data === "string"
+                            ? data.replace(/^["']|["']$/g, "")
+                            : "";
+                    if (fallback.length > 0 && /[A-Za-z0-9_\-.,!?;:'"()\s]/.test(fallback)) {
+                        handlers.onToken?.(fallback);
+                    }
+                } else {
+                    handlers.onError?.(
+                        err instanceof Error ? err : new Error("Failed to parse SSE event")
+                    );
+                }
             }
         }
     }
