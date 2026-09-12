@@ -142,9 +142,50 @@ sequenceDiagram
 
 ## Performance and results
 
+### Production deployment
+
+- Frontend: https://frontend-production-2604.up.railway.app
+- Backend: https://backend-production-8ff0.up.railway.app
+- Database: Railway PostgreSQL with `pgvector`
+
+### Production indexing result
+
+The following result was observed after indexing `codzenn/auth-nextjs-app` in the deployed application:
+
+| Metric | Result |
+| --- | ---: |
+| Index status | `READY` |
+| Files processed | 24 / 24 |
+| Chunks created | 40 |
+| Indexing errors | 0 |
+| Indexed at | 2026-09-12 08:11:20 UTC |
+
+### Initial production RAG evaluation
+
+The first qualitative evaluation used `codzenn/auth-nextjs-app` after indexing 24 files into 40 chunks. Six questions were asked in separate chat sessions and answers were checked against the repository citations.
+
+| Question | Result | Notes |
+| --- | --- | --- |
+| How is GitHub authentication implemented? | Not applicable | The repository uses email/password authentication rather than GitHub authentication. |
+| How is user login implemented? | Pass | Correctly described the login page, API route, bcrypt validation, JWT, and HttpOnly cookie. |
+| Where are protected routes handled? | Pass | Correctly identified `src/middleware.ts`. |
+| What happens when an unauthenticated user opens a protected page? | Fail | The answer missed the middleware behavior and did not cite `src/middleware.ts`. |
+| Which environment variables are required? | Partial | Identified mailer variables but did not provide a complete list. |
+| How does the application handle authentication errors? | Pass | Correctly described login and signup error responses. |
+
+For the five applicable questions, 3 were accepted as correct, 1 was partial, and 1 failed. The strict answer accuracy is therefore **60% (3/5)**. The GitHub-authentication question was excluded because this repository does not implement GitHub authentication. This is an initial qualitative result.
+
+#### Evaluation screenshots
+
+![Protected routes RAG result](docs/images/rag-protected-routes-success.png)
+
+![Protected page question with missed context](docs/images/rag-protected-page-failure.png)
+
+![Environment variables RAG result](docs/images/rag-environment-variables.png)
+
 ### Verified implementation metrics
 
-The repository provides verified configuration and source-level metrics, but it does not contain a committed load-test harness or retrieval-evaluation dataset. The following values are therefore implementation facts, not claims of production performance.
+The repository provides verified configuration and source-level metrics, plus a small manually recorded production evaluation.
 
 | Metric | Verified value | Evidence |
 | --- | ---: | --- |
@@ -169,15 +210,19 @@ The repository provides verified configuration and source-level metrics, but it 
 
 ### Benchmark status
 
-No verified numerical results are currently available in this repository for:
+#### Preliminary production chat benchmark
 
-- throughput in requests/second, files/second, or chunks/second;
-- p50, p95, or p99 indexing and chat latency;
-- time to first token;
-- runtime error rate under a defined workload;
-- CPU, memory, database connection-pool, or container utilization.
+The following measurements were collected from five chat requests for `codzenn/auth-nextjs-app` in the Railway production deployment on 2026-09-12. The selected Network requests were the chat message requests, and their Chrome DevTools timing totals were 473.95 ms, 1.50 s, 459.00 ms, 459.24 ms, and 456.91 ms.
 
-These fields are marked **not measured** rather than estimated. A future benchmark should record the workload, repository size, model versions, database configuration, concurrency, warm/cold state, and measurement date alongside the results.
+| Metric | Result |
+| --- | ---: |
+| Chat requests measured | 5 |
+| Average latency | 669.82 ms |
+| Median latency (p50) | 459.24 ms |
+| Minimum latency | 456.91 ms |
+| Maximum latency | 1.50 s |
+
+This is a small preliminary test.
 
 ## RAG implementation and evaluation
 
@@ -198,16 +243,21 @@ The implemented pipeline uses:
 
 ### Retrieval accuracy status
 
-The project does not include a labeled question/document evaluation set, baseline retriever, or evaluation script. Consequently, the following required quality metrics have **no verified values**:
+The project currently has a small manually reviewed production evaluation.
 
-| Metric | Baseline | Post-optimization | Status |
-| --- | ---: | ---: | --- |
-| Retrieval accuracy | Not measured | Not measured | No labeled evaluation set |
-| Context relevance score | Not measured | Not measured | No scoring harness |
-| Hit rate@k | Not measured | Not measured | No ground-truth targets |
-| Mean reciprocal rank (MRR) | Not measured | Not measured | No ground-truth targets |
+#### Preliminary manual result
 
-The implementation contains retrieval-quality controls, including repository filtering and metadata-rich chunks, but those design changes must not be presented as measured accuracy improvements. Adding a reproducible evaluation set and recording before/after runs is required before publishing numerical RAG gains.
+For `codzenn/auth-nextjs-app`, five applicable questions were reviewed against the generated answers and citations:
+
+| Metric | Result |
+| --- | ---: |
+| Applicable questions | 5 |
+| Accepted correct answers | 3 |
+| Partial answers | 1 |
+| Failed answers | 1 |
+| Strict answer accuracy | 60% (3/5) |
+
+This is a preliminary answer-quality result.
 
 ## Installation
 
@@ -300,21 +350,3 @@ The repository must finish indexing before a chat session can be created. Re-ind
 | `GET` | `/api/chat/sessions?repositoryId={id}` | List repository sessions |
 | `GET` | `/api/chat/sessions/{id}` | Read session messages |
 | `POST` | `/api/chat/sessions/{id}/messages` | Stream a RAG response over SSE |
-
-## Contributing
-
-1. Keep authentication and per-request ownership checks intact.
-2. Preserve the `repoId` vector metadata filter.
-3. Do not commit secrets or local environment files.
-4. Update this README and `decisions.md` when architecture or operational behavior changes.
-5. Do not claim performance or RAG-quality improvements without reproducible measurements.
-6. Run the existing project checks before submitting a change:
-
-```bash
-cd client
-npm run lint
-npx tsc --noEmit
-
-cd ..\server
-mvnw.cmd test
-```

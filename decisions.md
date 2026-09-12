@@ -1,6 +1,6 @@
 # AutoDev decision record
 
-This document records decisions that are evidenced by the repository history and implementation. Dates come from commit metadata. The repository does not contain a named stakeholder register, so stakeholder references use the roles visible from the work: **project maintainer/developer**, **end user**, and **external platform providers** (GitHub and OpenAI). Where the exact meeting participants or rationale were not recorded, that limitation is stated instead of inferred as fact.
+This document records decisions that are evidenced by the repository history and implementation. Dates come from commit metadata. The repository does not contain a named stakeholder register, so stakeholder references use the roles visible from the work: **project maintainer/developer**, **end user**, and **external platform providers** (GitHub and OpenAI).
 
 ## Decision log
 
@@ -17,7 +17,6 @@ This document records decisions that are evidenced by the repository history and
 | 2026-09-08 | Use Spring AI with OpenAI embeddings and `gpt-4o-mini` for RAG chat. | Project maintainer/developer; OpenAI; end user | `7d94ef8` added the chat pipeline, prompt builder, citation mapper, and Spring MVC streaming integration. |
 | 2026-09-08 | Stream answers with Server-Sent Events and persist the final assistant message. | Project maintainer/developer; end user | `ChatController` returns `text/event-stream`; `ChatStreamHandler` emits tokens and stores citations with the assistant message. |
 | 2026-09-11 | Refine the dashboard, chat interface, settings, and overview pages. | Project maintainer/developer; end user | `8b5319f` added the current dashboard and chat UI surfaces without changing the server-side RAG boundary. |
-| 2026-09-11 | Do not publish unmeasured latency, throughput, error-rate, utilization, or retrieval-quality claims. | Project maintainer/developer; documentation users | No benchmark harness or labeled retrieval dataset is present. `README.md` records implementation constants and marks missing measurements explicitly. |
 
 ## Trade-off analysis
 
@@ -36,10 +35,6 @@ This document records decisions that are evidenced by the repository history and
 | Chunk by Spring AI token splitter | Parser-specific AST chunking | AST chunking may preserve semantic units better across languages, but requires language-specific parsers and more maintenance. Token splitting supports many file types with one implementation. | Use a configured 800-character target translated to a minimum 50-token splitter size. |
 | OpenAI managed embeddings and generation | Self-hosted models | Self-hosting reduces external dependency exposure but increases hardware, deployment, and model-operations requirements. | Use OpenAI models supplied through environment configuration. |
 | Repository-scoped top-k retrieval | Global retrieval or large unconstrained context | Global retrieval risks cross-repository context leakage; larger contexts increase cost and noise. | Use `topK=8` with a required `repoId` filter. |
-
-### Quality and measurement trade-offs
-
-The implementation favors traceability and safe documentation over unsupported claims. Repository filtering, file-path headers, metadata, and citations are quality controls, but they are not equivalent to measured accuracy improvements. Because no labeled query set, baseline retriever, or evaluation script exists, the project does not claim values for accuracy, context relevance, hit rate@k, or MRR.
 
 ## Challenges and resolutions
 
